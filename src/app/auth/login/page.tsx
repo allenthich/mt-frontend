@@ -1,22 +1,23 @@
 "use client";
+import { setUserAuthCookie } from "@/utils/cookieHandler";
 import { FunctionComponent, useState } from "react";
+import { useRouter } from "next/navigation";
 
-interface LoginFormData {
+interface LoginForm {
   email: string,
   password: string,
 } 
 
-interface LoginFormErrors {
-  email?: string
-  password?: string
+interface LoginFormErrors extends LoginForm {
   apiError?: string
 }
 
 const Login: FunctionComponent = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-  } as LoginFormData);
+  } as LoginForm);
   const [errors, setErrors] = useState({} as LoginFormErrors);
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -30,7 +31,10 @@ const Login: FunctionComponent = () => {
   };
 
   const validateForm = () => {
-    const errors: LoginFormErrors = {};
+    const errors: LoginFormErrors = {
+      email: "",
+      password: "",
+    };
 
     if (!formData.email) {
       errors.email = "Email is required";
@@ -44,6 +48,29 @@ const Login: FunctionComponent = () => {
     return errors;
   };
 
+  const fetchAuthLogin = async (userData: LoginForm) => {
+    const response = await fetch("http://localhost:8080/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify({
+        email: userData.email,
+        password: userData.password,
+      }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    })
+
+    const json = await response.json();
+
+    if (response.status === 200) {
+      setUserAuthCookie(JSON.stringify(json))
+      // Redirect to tasks page
+      router.push('/tasks');
+    } else {
+      throw new Error(`API Request failed with ${response.status} (${response.statusText}); ${json}`)
+    }
+  };
+
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     const target = e.target as typeof e.target & {
@@ -54,17 +81,21 @@ const Login: FunctionComponent = () => {
     const password = target.password.value;
 
     const formErrors = validateForm();
-    if (Object.keys(formErrors).length === 0) {
+    const isValidForm = Object.values(formErrors).join("").length === 0
+    if (isValidForm) {
       try {
         setLoading(true);
         // Make an API request to create the account
-        // const response = await fetch.post("/api/signup", formData);
+        await fetchAuthLogin({
+          email,
+          password
+        } as LoginForm)
         setSuccessMessage("Logging in!");
         // You may want to redirect the user to a login page or take other actions here
-      } catch (error) {
+      } catch (error: any) {
         // Handle API errors and set appropriate error messages in state
         console.error("API Error:", error);
-        setErrors({ apiError: "An error occurred during login." });
+        setErrors({ ...formErrors, apiError: error.message });
       } finally {
         setLoading(false);
       }

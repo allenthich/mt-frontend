@@ -3,16 +3,13 @@ import { FunctionComponent, useState } from "react";
 import { setUserAuthCookie } from "@/utils/cookieHandler";
 import { useRouter } from "next/navigation";
 
-interface RegistrationFormData {
+interface RegistrationForm {
   email: string;
   password: string;
   passwordReenter: string;
 }
 
-interface RegistrationFormErrors {
-  email?: string;
-  password?: string;
-  passwordReenter?: string;
+interface RegistrationFormErrors extends RegistrationForm {
   apiError?: string;
 }
 
@@ -22,7 +19,7 @@ const Registration: FunctionComponent = () => {
     email: "",
     password: "",
     passwordReenter: "",
-  } as RegistrationFormData);
+  } as RegistrationForm);
   const [errors, setErrors] = useState({} as RegistrationFormErrors);
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -36,7 +33,11 @@ const Registration: FunctionComponent = () => {
   };
 
   const validateForm = () => {
-    const errors: RegistrationFormErrors = {};
+    const errors: RegistrationFormErrors = {
+      email: "",
+      password: "",
+      passwordReenter: "",
+    };
 
     if (!formData.email) {
       errors.email = "Email is required";
@@ -59,7 +60,7 @@ const Registration: FunctionComponent = () => {
     return errors;
   };
 
-  const fetchRegistration = async (userData: RegistrationFormData) => {
+  const fetchRegistration = async (userData: RegistrationForm) => {
     const response = await fetch("http://localhost:8080/api/registration", {
       method: "POST",
       body: JSON.stringify({
@@ -93,18 +94,20 @@ const Registration: FunctionComponent = () => {
     const password = target.password.value;
 
     const formErrors = validateForm();
-    if (Object.keys(formErrors).length === 0) {
+    const isValidForm = Object.values(formErrors).join("").length === 0
+    if (isValidForm) {
       try {
         setLoading(true);
         // Make an API request to create the account
         await fetchRegistration({
           email,
           password
-        } as RegistrationFormData)
+        } as RegistrationForm)
+        setSuccessMessage("Registration success!");
       } catch (error: any) {
         // Handle API errors and set appropriate error messages in state
         console.error(error.message);
-        setErrors({ apiError: error.message });
+        setErrors({ ...formErrors, apiError: error.message });
       } finally {
         setLoading(false);
       }
