@@ -3,9 +3,13 @@ import { setUserAuthCookie } from "@/utils/cookieHandler";
 import { FunctionComponent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoginForm, LoginFormErrors } from "@/types/custom"
+import { useAuthContext } from "@/app/context/AuthContext/AuthProvider";
 
 const Login: FunctionComponent = () => {
   const router = useRouter();
+
+  const { updateIsAuthorized } = useAuthContext()
+  
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -61,6 +65,8 @@ const Login: FunctionComponent = () => {
 
     if (response.status === 200) {
       setUserAuthCookie(JSON.stringify(json))
+      updateIsAuthorized(true)
+
       // Redirect to tasks page
       router.push('/tasks');
     } else {

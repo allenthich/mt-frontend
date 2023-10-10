@@ -1,11 +1,15 @@
 "use client";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useContext, useState } from "react";
 import { setUserAuthCookie } from "@/utils/cookieHandler";
 import { useRouter } from "next/navigation";
 import { RegistrationForm, RegistrationFormErrors } from "@/types/custom";
+import { useAuthContext } from "../context/AuthContext/AuthProvider";
 
 const Registration: FunctionComponent = () => {
   const router = useRouter();
+
+  const { updateIsAuthorized } = useAuthContext()
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -72,6 +76,7 @@ const Registration: FunctionComponent = () => {
 
     if (response.status === 200) {
       setUserAuthCookie(JSON.stringify(json))
+      updateIsAuthorized(true)
       // Redirect to tasks page
       router.push('/tasks');
     } else {

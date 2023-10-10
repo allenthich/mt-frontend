@@ -19,6 +19,12 @@ export interface TasksProviderHelpers {
   fetchDeleteTask: Function;
 }
 
+export interface AuthProviderHelpers {
+  isAuthorized: boolean;
+  updateIsAuthorized: Function;
+  clearClientAuthorization: Function;
+}
+
 export interface LoginForm {
   email: string;
   password: string;

@@ -1,9 +1,10 @@
 "use client"
 import TaskItem from "@/components/TaskItem";
 import Add from "@/components/shared/icons/add";
-import { Task, TasksProviderHelpers } from "@/types/custom";
+import { AuthProviderHelpers, Task, TasksProviderHelpers } from "@/types/custom";
 import { FunctionComponent, useEffect } from "react";
 import { useTasksContext } from "@/context/TasksContext/TasksProvider";
+import { useAuthContext } from "@/app/context/AuthContext/AuthProvider";
 
 const TaskList: FunctionComponent = () => {
   const {
@@ -12,11 +13,14 @@ const TaskList: FunctionComponent = () => {
     fetchTasks,
     fetchCreateTask
   }: TasksProviderHelpers = useTasksContext();
+  const { isAuthorized }: AuthProviderHelpers = useAuthContext();
 
   // Initialize data from API
   useEffect(() => {
-    fetchTasks()
-  }, [])
+    if (isAuthorized) {
+      fetchTasks()
+    }
+  }, [isAuthorized])
 
   const displayTasks = () => {
     if (tasks.length === 0) return <b>No tasks exist.</b>;

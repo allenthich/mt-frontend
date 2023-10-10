@@ -25,10 +25,8 @@ const setUserAuthCookie = (token: string) => {
     }
 }
 
-const clearUserAuthCookie = (token: string) => {
-    if (token) {
-        Cookies.remove(COOKIE_STORAGE_NAME)
-    }
+const clearUserAuthCookie = () => {
+    Cookies.remove(COOKIE_STORAGE_NAME)
 }
 
 // Parses and returns stored auth cookie for JWT Token
