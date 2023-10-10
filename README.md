@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# mt-frontend
+
+A TypeScript React task management application built using Next.js.
+
+## Table of contents
+
+- [Overview](#overview)
+- [Getting Started](#getting-started)
+- [Routes](#routes)
+- [Project Structure](#project-structure)
+- [Development Scripts](#development-scripts)
+- [To do](#to-do)
+- [References](#references)
+
+## Overview
+This project utilizes the following stack:
+
+- Framework - [Next.js](https://nextjs.org/)
+- Language - [TypeScript](https://www.typescriptlang.org)
+- Styling - [Tailwind CSS](https://tailwindcss.com/)
+- Auth - [JSON Web Tokens](https://jwt.io/)
+- Formatting - [Prettier](https://prettier.io/)
 
 ## Getting Started
 
-First, run the development server:
+Install npm dependencies:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+cd mt-frontend
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<!-- Populate `.env` values:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+API_URL="..."
+``` -->
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Start the server:
 
-## Learn More
+```
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+The server is now running on `http://localhost:3000`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Routes
+List of accessible pages and routes:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- `/` : Renders home page
+- `/tasks` : Renders tasks dashboard page
+- `/auth/login` : Renders login page
+- `/registration` : Renders sign up page
+- `/logout` : Renders log out page
 
-## Deploy on Vercel
+## Project Structure
+The project follows a page/component-based colocation structure. Note not all files and folders are listed for simplicity.
+```
+├── src
+│   ├── app
+│   │   ├── auth/login
+│   │   ├── context         // Context state providers folder
+│   │   ├── logout
+│   │   ├── registration
+│   │   ├── tasks           // Tasks dashboard 
+│   │   ├── _app.tsx        // Main component wrapper
+│   │   ├── layout.tsx      // Main layout
+│   │   └── page.tsx        // Home page of app
+│   └── components          // Modular, shared components
+│       ├── TaskItem.tsx
+│       └── TaskList.tsx
+├── types
+├── utils
+└── tsconfig.json
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+## Development Scripts
+### Next.js
+#### Build project for production
+```
+npm run build
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## To do
+- [ ] Port localhost and API endpoints to env variables
+- [ ] Add feedback for task actions: create, delete
+- [ ] Refactor state management and redirect logic
+- [ ] Filter feature
+- [ ] Use `Bearer` standard for HTTP request header authorization
+- [ ] Normalize API return responses
+- [ ] Create/abstract API service to perform communicates
+- [ ] Standardize Error responses across all potential Error types
+- [ ] Write tests for user flows
+- [ ] http-status-codes ReasonPhrases usage?
+
+## References
+<details><summary><strong>Notes</strong></summary>
+</details>
+<details><summary><strong>Other sources</strong></summary>
+</details>
