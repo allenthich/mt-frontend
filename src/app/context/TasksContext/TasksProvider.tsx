@@ -62,7 +62,64 @@ export const TasksProvider = ({
       
       if (response.status === 200) {
         // Update task list
-        setTasks([...tasks, json])
+        // setTasks([...tasks, json])
+        fetchTasks()
+      } else {
+        throw new Error(`API Request failed with ${response.status} (${response.statusText}); ${json}`)
+      }
+    } catch (e) {
+      throw e
+    }
+  };
+
+  const fetchUpdateTask = async (data: Task) => {
+    try {
+      const userAuth = getUserAuthCookie()
+      const taskId = data.id
+      const response = await fetch("http://localhost:8080/api/tasks" + `/${taskId}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          title: data.title,
+          description: data.description,
+        }),
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": userAuth.token
+        },
+      })
+  
+      const json = await response.json();
+      
+      if (response.status === 200) {
+        // Update task list
+        // setTasks(tasks)
+        fetchTasks()
+      } else {
+        throw new Error(`API Request failed with ${response.status} (${response.statusText}); ${json}`)
+      }
+    } catch (e) {
+      throw e
+    }
+  };
+
+  const fetchDeleteTask = async (data: Task) => {
+    try {
+      const userAuth = getUserAuthCookie()
+      const taskId = data.id
+      const response = await fetch("http://localhost:8080/api/tasks" + `/${taskId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": userAuth.token
+        },
+      })
+  
+      const json = await response.json();
+      
+      if (response.status === 200) {
+        // Update task list
+        // setTasks([...tasks, json])
+        fetchTasks()
       } else {
         throw new Error(`API Request failed with ${response.status} (${response.statusText}); ${json}`)
       }
@@ -72,7 +129,12 @@ export const TasksProvider = ({
   };
 
   const tasksProviderHelpers: TasksProviderHelpers = {
-    tasks, updateTasks, fetchTasks, fetchCreateTask
+    tasks,
+    updateTasks,
+    fetchTasks,
+    fetchCreateTask,
+    fetchUpdateTask,
+    fetchDeleteTask,
   }
 
   return (
