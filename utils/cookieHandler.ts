@@ -32,16 +32,10 @@ const clearUserAuthCookie = (token: string) => {
 }
 
 // Parses and returns stored auth cookie for JWT Token
-const getUserJWTToken = (): string | undefined => {
+const getUserJWTToken = (): string => {
     const user = getUserAuthCookie()
-    if (!user) return undefined
-
-    try {
-        const userJSON = JSON.parse(user)
-        return userJSON.token
-    } catch (e) {
-        throw e
-    }
+    if (!user || !user.token) return ""
+    return user.token
 }
 
 export {
