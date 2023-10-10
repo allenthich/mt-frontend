@@ -1,6 +1,6 @@
 "use client";
 import { FunctionComponent, useState } from "react";
-import { storeJWTToken } from "@/utils/cookieHandler";
+import { setUserAuthCookie } from "@/utils/cookieHandler";
 import { useRouter } from "next/navigation";
 
 interface RegistrationFormData {
@@ -74,7 +74,7 @@ const Registration: FunctionComponent = () => {
     const json = await response.json();
 
     if (response.status === 200) {
-      storeJWTToken(JSON.stringify(json))
+      setUserAuthCookie(JSON.stringify(json))
       // Redirect to tasks page
       router.push('/tasks');
     } else {
