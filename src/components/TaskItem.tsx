@@ -36,9 +36,9 @@ const TaskItem: FunctionComponent = ({ task }: any) => {
       <form onSubmit={updateTaskData}>
         <div className="flex min-w-0 flex-row gap-2">
           <div className="grow text-sm font-medium leading-6">
-            <span className="block text-sm font-medium text-slate-700">
+            {/* <span className="block text-sm font-medium text-slate-700">
               Title
-            </span>
+            </span> */}
             <input
               type="text"
               name="title"
@@ -47,9 +47,9 @@ const TaskItem: FunctionComponent = ({ task }: any) => {
               disabled={!editable}
             />
             <div className="mt-2  text-sm font-medium leading-6">
-              <span className="block text-sm font-medium text-slate-700">
+              {/* <span className="block text-sm font-medium text-slate-700">
                 Description
-              </span>
+              </span> */}
               <input
                 type="text"
                 name="description"

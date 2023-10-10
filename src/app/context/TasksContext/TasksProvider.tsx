@@ -49,7 +49,7 @@ export const TasksProvider = ({
       const response = await fetch("http://localhost:8080/api/tasks", {
         method: "POST",
         body: JSON.stringify({
-          title: "Example",
+          title: "New task",
           description: "Example description"
         }),
         headers: {
