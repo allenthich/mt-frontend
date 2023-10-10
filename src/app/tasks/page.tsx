@@ -1,7 +1,8 @@
 "use client"
 import TaskItem from "@/components/TaskItem";
 import Add from "@/components/shared/icons/add";
-import { FunctionComponent, useState } from "react";
+import { getUserAuthCookie } from "@/utils/cookieHandler";
+import { FunctionComponent, useEffect, useState } from "react";
 
 type Task = {
   id: string;
@@ -9,18 +10,64 @@ type Task = {
   description: string;
 };
 
-const TasksDashboard: FunctionComponent = () => {
-  const [tasks, setTasks] = useState()
+const Tasks: FunctionComponent = () => {
+  const [tasks, setTasks] = useState([] as Array<Task>)
 
+  // Initialize data from API
+  useEffect(() => {
+    fetchTasks()
+  }, [])
+
+  const fetchTasks = async () => {
+    try {
+      const userAuth = getUserAuthCookie()
+      const response = await fetch("http://localhost:8080/api/tasks", {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": userAuth.token
+        },
+      })
   
-}
+      const json = await response.json();
+      
+      if (response.status === 200) {
+        setTasks(json)
+      } else {
+        throw new Error(`API Request failed with ${response.status} (${response.statusText}); ${json}`)
+      }
+    } catch (e) {
+      throw e
+    }
+  };
 
-export default function Dashboard() {
-  const tasks: Array<Task> = [
-    { title: "Task 1", description: "Random description", id: "1" },
-    { title: "Task 2", description: "Random description", id: "2" },
-    { title: "Task 3", description: "Random description", id: "3" },
-  ];
+  const fetchCreateTask = async () => {
+    try {
+      const userAuth = getUserAuthCookie()
+      const response = await fetch("http://localhost:8080/api/tasks", {
+        method: "POST",
+        body: JSON.stringify({
+          title: "Example",
+          description: "Example description"
+        }),
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": userAuth.token
+        },
+      })
+  
+      const json = await response.json();
+      
+      if (response.status === 200) {
+        // Update task list
+        setTasks([...tasks, json])
+      } else {
+        throw new Error(`API Request failed with ${response.status} (${response.statusText}); ${json}`)
+      }
+    } catch (e) {
+      throw e
+    }
+  };
 
   const displayTasks = () => {
     if (tasks.length === 0) return <b>No tasks exist.</b>;
@@ -61,13 +108,13 @@ export default function Dashboard() {
               placeholder="Filter tasks..."
             />
           </form>
-            <a
-              href="/new"
+            <button
+              onClick={fetchCreateTask}
               className="flex items-center rounded-md bg-blue-500 py-2 pl-2 pr-3 text-sm font-medium text-white shadow-sm hover:bg-blue-400"
             >
               <Add className="mr-2"/>
               New
-            </a>
+            </button>
           </div>
           
         </div>
@@ -80,3 +127,5 @@ export default function Dashboard() {
     </>
   );
 }
+
+export default Tasks;

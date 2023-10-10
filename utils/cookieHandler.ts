@@ -1,10 +1,22 @@
 import Cookies from "js-cookie";
+import { UserAuth } from "@/types/custom";
 
 // TODO: Env?
 const COOKIE_STORAGE_NAME = "mt-frontend"
 
-const getUserAuthCookie = (): string | undefined => {
-    return Cookies.get(COOKIE_STORAGE_NAME)
+const getUserAuthCookie = (): UserAuth => {
+    const user = Cookies.get(COOKIE_STORAGE_NAME)
+    if (!user) return {
+        id: "",
+        email: "",
+        token: ""
+    }
+    try {
+        const userJSON = JSON.parse(user)
+        return userJSON
+    } catch (e) {
+        throw e
+    }
 }
 
 const setUserAuthCookie = (token: string) => {
