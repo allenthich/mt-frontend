@@ -62,7 +62,7 @@ const TaskList: FunctionComponent = () => {
             />
           </form>
             <button
-              onClick={fetchCreateTask}
+              onClick={() => fetchCreateTask()}
               className="flex items-center rounded-md bg-blue-500 py-2 pl-2 pr-3 text-sm font-medium text-white shadow-sm hover:bg-blue-400"
             >
               <Add className="mr-2"/>
