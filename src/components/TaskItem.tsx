@@ -1,11 +1,11 @@
 import Save from "@/components/shared/icons/save";
 import Edit from "@/components/shared/icons/edit";
 import Delete from "@/components/shared/icons/delete";
-import { FunctionComponent, useState } from "react";
+import { FC, useState } from "react";
 import { useTasksContext } from "@/app/context/TasksContext/TasksProvider";
-import { TasksProviderHelpers } from "@/types/custom";
+import { TaskItemProps, TasksProviderHelpers } from "@/types/custom";
 
-const TaskItem: FunctionComponent = ({ task }: any) => {
+const TaskItem: FC<TaskItemProps> = ({ task }) => {
   const [editable, setEditable] = useState(false);
   const { fetchUpdateTask, fetchDeleteTask }: TasksProviderHelpers =
     useTasksContext();

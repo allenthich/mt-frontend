@@ -9,6 +9,9 @@ export interface Task {
   title: string;
   description: string;
 }
+export interface TaskItemProps {
+  task: Task;
+}
 
 export interface TasksProviderHelpers {
   tasks: Array<Task>;
