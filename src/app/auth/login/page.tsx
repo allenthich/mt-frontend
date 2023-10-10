@@ -2,15 +2,7 @@
 import { setUserAuthCookie } from "@/utils/cookieHandler";
 import { FunctionComponent, useState } from "react";
 import { useRouter } from "next/navigation";
-
-interface LoginForm {
-  email: string,
-  password: string,
-} 
-
-interface LoginFormErrors extends LoginForm {
-  apiError?: string
-}
+import { LoginForm, LoginFormErrors } from "@/types/custom"
 
 const Login: FunctionComponent = () => {
   const router = useRouter();
@@ -28,6 +20,11 @@ const Login: FunctionComponent = () => {
       ...formData,
       [name]: value,
     });
+
+    // Check error values and reset errors for after submit
+    if (Object.values(errors).join("").length !== 0) {
+      setErrors({} as LoginFormErrors)
+    }
   };
 
   const validateForm = () => {
@@ -107,13 +104,12 @@ const Login: FunctionComponent = () => {
   const sharedInputClasses =
     "mt-2 block w-full rounded-md border bg-white px-4 py-2 text-gray-700 focus:border-gray-400 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-40 peer";
   return (
-    <div className="relative flex min-h-screen flex-col justify-center overflow-hidden">
-      <div className="m-auto w-full rounded-md bg-white p-6 shadow-xl lg:max-w-xl">
+    <div className="relative flex min-h-screen flex-col justify-center overflow-hidden w-9/12">
+      <div className="m-auto w-full rounded-md bg-white p-6 shadow-xl max-w-sm">
         <h1 className="text-center text-2xl text-gray-700">
           Sign in
         </h1>
-        {successMessage && <p className="success-message">{successMessage}</p>}
-        {errors.apiError && <p className="error-message">{errors.apiError}</p>}
+        <p className="max-w-sm">{successMessage || errors.apiError}<br /></p>
         <form className="mt-6" onSubmit={handleSubmit}>
           {/* EMAIL */}
           <div className="mb-2">
@@ -132,7 +128,7 @@ const Login: FunctionComponent = () => {
               placeholder=" "
               required
             />
-            {/* {errors.email && <p className="error-message">{errors.email}</p>} */}
+            {/* {errors.email && <p className="max-w-sm">{errors.email}</p>} */}
             <span className="mt-2 invisible text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:visible">
               Please enter a valid email address
             </span>
