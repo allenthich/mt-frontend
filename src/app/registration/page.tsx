@@ -61,7 +61,7 @@ const Registration: FunctionComponent = () => {
   };
 
   const fetchRegistration = async (userData: RegistrationForm) => {
-    const response = await fetch("http://localhost:8080/api/registration", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/registration`, {
       method: "POST",
       body: JSON.stringify({
         email: userData.email,

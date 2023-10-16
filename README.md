@@ -30,13 +30,19 @@ cd mt-frontend
 npm install
 ```
 
-<!-- Populate `.env` values:
+### Populate `.env` values:
 
+Production:
 ```
-API_URL="..."
-``` -->
+NEXT_PUBLIC_API_URL=https://mt-backend-tau.vercel.app
+```
 
-Start the server:
+Local Development:
+```
+NEXT_PUBLIC_API_URL=http://localhost:8080
+```
+
+### Start the server:
 
 ```
 npm run dev
@@ -82,7 +88,7 @@ npm run build
 ```
 
 ## To do
-- [ ] Port localhost and API endpoints to env variables
+- [x] Port localhost and API endpoints to env variables
 - [ ] Add feedback for task actions: create, delete
 - [ ] Refactor state management and redirect logic
 - [ ] Filter feature

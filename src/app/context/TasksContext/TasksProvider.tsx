@@ -23,7 +23,7 @@ export const TasksProvider = ({
   const fetchTasks = async () => {
     try {
       const userAuth = getUserAuthCookie()
-      const response = await fetch("http://localhost:8080/api/tasks", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks`, {
         method: "GET",
         headers: {
           "Content-type": "application/json",
@@ -46,7 +46,7 @@ export const TasksProvider = ({
   const fetchCreateTask = async () => {
     try {
       const userAuth = getUserAuthCookie()
-      const response = await fetch("http://localhost:8080/api/tasks", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks`, {
         method: "POST",
         body: JSON.stringify({
           title: "New task",
@@ -76,7 +76,7 @@ export const TasksProvider = ({
     try {
       const userAuth = getUserAuthCookie()
       const taskId = data.id
-      const response = await fetch("http://localhost:8080/api/tasks" + `/${taskId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${taskId}`, {
         method: "PUT",
         body: JSON.stringify({
           title: data.title,
@@ -106,7 +106,7 @@ export const TasksProvider = ({
     try {
       const userAuth = getUserAuthCookie()
       const taskId = data.id
-      const response = await fetch("http://localhost:8080/api/tasks" + `/${taskId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${taskId}`, {
         method: "DELETE",
         headers: {
           "Content-type": "application/json",
